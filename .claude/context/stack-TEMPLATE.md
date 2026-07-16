@@ -11,18 +11,6 @@
 ### Frontend
 - **Framework**: [React / Vue / Svelte / Next.js / ...]
 - **Styling**: [Tailwind / CSS Modules / Styled Components / ...]
-- **State**: [Zustand / Pinia / Redux / ...]
-
-### Infrastructure
-- **Container**: Docker / Podman
-- **Orchestration**: Docker Compose / Kubernetes
-- **Cloud**: AWS / GCP / Azure / Vercel / Netlify
-
-## المكتبات المهمة
-
-| المكتبة | الإصدار | الغرض |
-|---------|---------|-------|
-| [اسم] | [ver] | [الوصف] |
 
 ## أدوات التطوير
 

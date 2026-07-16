@@ -1,25 +1,20 @@
-# كتابة الاختبارات
+# أوامر سريعة: كتابة الاختبارات
 
 ## الاستخدام
-```
-اكتب اختبارات لـ [الملف/الدالة]
-المتوقع:
-- [السلوك1]
-- [السلوك2]
 
+```
+اكتب اختبارات لـ [الدالة/الملف]
 القيود:
 - استخدم [pytest/jest/...]
-- التزم بالهيكل في [tests/]
 - غطِّ الحالات:
   - ✅ Happy Path
   - ⚠️ Edge Cases
   - ❌ Error Cases
 ```
 
-## قالب اختبار
+## قالب الاختبار (Python/pytest)
 
 ```python
-# Python / pytest
 import pytest
 from [module] import [function]
 
@@ -37,14 +32,15 @@ class Test[FunctionName]:
         # Assert
         assert result == expected
         
-    def test_[description]_failure(self):
-        """اختبار: [وصف الفشل]"""
+    def test_[description]_error(self):
+        """اختبار: [وصف الخطأ]"""
         with pytest.raises([ExpectedException]):
             [function](invalid_input)
 ```
 
+## قالب الاختبار (JavaScript/Jest)
+
 ```javascript
-// JavaScript / Jest
 describe('[FunctionName]', () => {
   it('should [expected behavior]', () => {
     const result = functionName(input);
