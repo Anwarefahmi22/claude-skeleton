@@ -1,0 +1,93 @@
+task_id: DRY-001
+version: 2
+phase: 2C
+objective: >
+  Update DRY_RUN.md to satisfy only the failed AC-02 requirement by adding the
+  exact required line "Muse Autonomous Development Loop: VERIFIED" while
+  preserving all previously passing criteria.
+repository: Anwarefahmi22/claude-skeleton
+branch: muse/dry-run-2c-iter2
+current_state: >
+  Iteration 1 completed with AC-01 PASS and AC-02 FAIL by design. GitHub
+  verification confirms commit 557665c348bae32e7fb8249e2e046adf1877ebd7
+  contains DRY_RUN.md without the VERIFIED line. Main branch remains unchanged.
+previous_status: COMPLETE
+previous_status_note: >
+  ChatGPT returned STATUS: COMPLETE scoped to iteration 1's intentionally
+  limited scope, while explicitly marking AC-02 as FAIL with evidence and
+  providing a complete repair specification. Functionally equivalent to
+  NEEDS_IMPLEMENTATION for the repair loop.
+failed_acceptance_criteria:
+  - AC-02
+
+acceptance_criteria:
+  - id: AC-01
+    description: File DRY_RUN.md exists at repository root on the working branch
+  - id: AC-02
+    description: 'DRY_RUN.md contains the exact line "Muse Autonomous Development Loop: VERIFIED"'
+
+root_cause: >
+  AC-02 failed because iteration 1 task scope explicitly restricted
+  implementation to AC-01 only and instructed the agent not to implement AC-02
+  during that iteration. The required VERIFIED line was therefore never added.
+
+implementation_steps:
+  - step: 1
+    action: Start from the iteration 1 implementation state already present in the working tree
+  - step: 2
+    action: Confirm execution is isolated from main
+  - step: 3
+    action: Inspect the current DRY_RUN.md contents
+  - step: 4
+    action: 'Modify DRY_RUN.md to include the exact required line "Muse Autonomous Development Loop: VERIFIED"'
+  - step: 5
+    action: Do not alter unrelated content or files
+  - step: 6
+    action: Run the AC-02 verification command and confirm it passes
+  - step: 7
+    action: Review git status and git diff
+  - step: 8
+    action: Confirm only the intended DRY_RUN.md modification exists
+  - step: 9
+    action: Commit, push, and report verification results
+
+constraints:
+  - Do not modify main
+  - Never modify anything under .muse/ (task artifacts are read-only)
+  - Do not create unrelated files
+  - Do not change existing repository configuration
+  - Do not implement additional functionality beyond AC-02
+  - Preserve all previously passing acceptance criteria
+  - Never merge, never force-push
+  - No secrets, tokens, or credentials in any file or commit message
+  - Do not create a pull request
+
+tests_required:
+  - name: ac01-file-exists
+    command: "test -f DRY_RUN.md && echo AC-01-PASS || echo AC-01-FAIL"
+    expect: AC-01-PASS
+  - name: ac02-verified-line
+    command: "grep -Fx 'Muse Autonomous Development Loop: VERIFIED' DRY_RUN.md && echo AC-02-PASS || echo AC-02-FAIL"
+    expect: AC-02-PASS
+
+expected_result: >
+  AC-02 passes after repair: DRY_RUN.md contains the required VERIFIED line,
+  AC-01 still passes, main remains unchanged, and no unexpected modifications exist.
+
+do_not_do:
+  - Do not remove DRY_RUN.md
+  - Do not modify files other than DRY_RUN.md
+  - Do not skip verification
+  - Do not claim AC-02 completion without independent evidence
+  - Do not touch the main branch
+  - Do not modify .muse/ task artifacts
+
+report_format: |
+  When finished, reply with exactly these lines:
+  STATUS: DONE
+  BRANCH: <branch-name>
+  COMMIT: <sha>
+  FILES: <changed-files>
+  AC-01: <PASS or FAIL>
+  AC-02: <PASS or FAIL>
+  VERIFICATION: <command outputs>
