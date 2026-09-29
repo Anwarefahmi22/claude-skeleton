@@ -1,0 +1,69 @@
+task_id: DRY-001
+version: v1
+objective: >
+  Validate the Muse to ChatGPT to Arena to GitHub orchestration loop using a
+  GitHub Task Artifact as the handoff channel, on a trivial non-production task.
+repository: Anwarefahmi22/claude-skeleton
+branch: muse/dry-run-001
+current_state: PLANNING
+
+acceptance_criteria:
+  - id: AC-01
+    description: File DRY_RUN.md exists at repository root on the working branch
+  - id: AC-02
+    description: File content is exactly the expected 5-line text
+  - id: AC-03
+    description: The verification command passes
+  - id: AC-04
+    description: git diff shows only the intended change
+  - id: AC-05
+    description: main branch is untouched
+  - id: AC-06
+    description: No secrets, credentials, or unexpected files in the change
+
+implementation_steps:
+  - step: 1
+    action: Create file DRY_RUN.md at repository root with the exact content from expected_result
+  - step: 2
+    action: Run the verification command from tests_required and confirm it passes
+  - step: 3
+    action: Run git status and git diff and confirm only DRY_RUN.md is added
+  - step: 4
+    action: Commit on the working branch
+  - step: 5
+    action: Push the working branch to origin
+  - step: 6
+    action: Report branch name, commit SHA, changed files, verification output
+
+constraints:
+  - Never work on the main branch
+  - Never merge, never force-push
+  - Never modify anything under .muse/ (task artifacts are read-only)
+  - No secrets, tokens, or credentials in any file or commit message
+  - Do not create a pull request
+
+tests_required:
+  - name: content-exactness
+    command: "python3 -c \"print(open('DRY_RUN.md').read())\""
+    expect: output matches expected_result exactly
+
+expected_result: |
+  Muse Autonomous Development Dry Run
+
+  This file was created by the Muse → ChatGPT → Arena → GitHub orchestration loop.
+
+  Iteration: 1
+
+do_not_do:
+  - Do not touch the main branch
+  - Do not create a pull request or merge anything
+  - Do not modify .muse/ task artifacts
+  - Do not add dependencies, configuration, or extra files
+
+report_format: |
+  When finished, reply with exactly these lines:
+  STATUS: DONE
+  BRANCH: <branch-name>
+  COMMIT: <sha>
+  FILES: <changed-files>
+  VERIFICATION: <PASS or FAIL plus command output>
