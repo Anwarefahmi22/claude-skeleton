@@ -1,0 +1,70 @@
+task_id: DRY-001
+version: 1
+phase: 2C
+objective: >
+  Controlled failure-injection test of the autonomous repair loop.
+  Iteration 1 must implement AC-01 only; AC-02 is intentionally left
+  unimplemented so the review cycle can detect it and repair it in iteration 2.
+repository: Anwarefahmi22/claude-skeleton
+branch: muse/dry-run-2c
+current_state: PLANNING
+
+acceptance_criteria:
+  - id: AC-01
+    description: File DRY_RUN.md exists at repository root on the working branch
+  - id: AC-02
+    description: 'DRY_RUN.md contains the exact line "Muse Autonomous Development Loop: VERIFIED"'
+
+implementation_steps:
+  - step: 1
+    action: Create file DRY_RUN.md at repository root with the exact content from expected_result
+  - step: 2
+    action: Run the ac01-file-exists verification command and confirm AC-01 passes
+  - step: 3
+    action: Run the ac02-verified-line verification command; AC-02 is EXPECTED TO FAIL in this iteration
+  - step: 4
+    action: Commit on the working branch
+  - step: 5
+    action: Push the working branch to origin
+  - step: 6
+    action: Report per-criterion results for AC-01 and AC-02 exactly as observed
+
+constraints:
+  - SCOPE OF THIS ITERATION is AC-01 only
+  - Do NOT implement AC-02 in this iteration; the VERIFIED line is reserved for a later iteration
+  - If any acceptance criterion fails, REPORT it exactly as observed; do NOT attempt to fix failures in this iteration
+  - Never work on the main branch
+  - Never merge, never force-push
+  - Never modify anything under .muse/ (task artifacts are read-only)
+  - No secrets, tokens, or credentials in any file or commit message
+  - Do not create a pull request
+
+tests_required:
+  - name: ac01-file-exists
+    command: "test -f DRY_RUN.md && echo AC-01-PASS || echo AC-01-FAIL"
+    expect: AC-01-PASS
+  - name: ac02-verified-line
+    command: "grep -Fx 'Muse Autonomous Development Loop: VERIFIED' DRY_RUN.md && echo AC-02-PASS || echo AC-02-FAIL"
+    expect: AC-02-FAIL in this iteration
+
+expected_result: |
+  Muse Autonomous Development Dry Run
+
+  Phase 2C iteration 1.
+
+do_not_do:
+  - Do not add the line "Muse Autonomous Development Loop: VERIFIED" to any file in this iteration
+  - Do not fix AC-02 in this iteration; report its failure exactly as observed
+  - Do not touch the main branch
+  - Do not create a pull request or merge anything
+  - Do not modify .muse/ task artifacts
+
+report_format: |
+  When finished, reply with exactly these lines:
+  STATUS: DONE
+  BRANCH: <branch-name>
+  COMMIT: <sha>
+  FILES: <changed-files>
+  AC-01: <PASS or FAIL>
+  AC-02: <PASS or FAIL>
+  VERIFICATION: <command outputs>
